@@ -14,6 +14,7 @@ Here are some ideas to get you started:
 - 😄 Pronouns: ...
 - ⚡ Fun fact: ...
 -->
+
 I'm always interested in broadening my horizons and this project is the next big step for me.
 
 Learning Python is what I've been spending most of my time on and I'm using GitHub to track my progress.
@@ -22,3 +23,5 @@ Learning Python is what I've been spending most of my time on and I'm using GitH
 ![image](https://github.com/user-attachments/assets/f44894a3-477c-4606-b512-37a3d1d53267)
 ![image](https://github.com/user-attachments/assets/14ecb7f6-0e5c-4e4a-8c1f-21f3999391b9)
 ![image](https://github.com/user-attachments/assets/b13061fd-fedd-4037-a453-957e6bd39a40)
+![image](https://github.com/user-attachments/assets/42273e0d-b7c9-4fc6-b092-cbd13c4ba6f0)
+
