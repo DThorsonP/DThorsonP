@@ -15,7 +15,7 @@ Here are some ideas to get you started:
 - ⚡ Fun fact: ...
 -->
 
-I'm always seeking oppertunities to broaden my horizons and learning more Python is what I've been investing my time in lately.
+I'm always seeking opportunities to broaden my horizons and learning more Python is what I've been investing my time in lately.
 
 I'm using GitHub to keep track of my progress.  Thanks so much for visiting today 😄 
 
