@@ -60,6 +60,7 @@ if (Test-Path -Path $targetDirectory -PathType Container) {
 
 $serviceName = "Tomcat9"
 $serviceDescription = "Apache Tomcat 9.0.109 Server"
+$env:CATALINA_HOME = "C:\Sailpoint\apache-tomcat-9.0.109"
 
 # Change the start type of the Apache Tomcat Service to Automatic
 Set-Service $serviceName -StartupType Automatic -Description $serviceDescription
