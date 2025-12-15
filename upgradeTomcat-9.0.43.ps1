@@ -61,7 +61,7 @@ Invoke-Step { Copy-Item  -Path $oldLogsFile -Destination $newLogsFile -Recurse -
 # subsequent steps don't work as expected but if you close,
 # PowerShell and open a new admin session it'll have updated
 Invoke-Step { [System.Environment]::SetEnvironmentVariable("CATALINA_HOME", "C:\Prog\apache-tomcat-9.0.113", "Machine") } "Failed to set CATALINA_HOME environment variable."
-# This didn't work >>> (Get-Item .).Refresh()
+$env:CATALINA_HOME = "C:\Prog\apache-tomcat-9.0.113"
 
 
 # Install the updated Apache Tomcat Service
