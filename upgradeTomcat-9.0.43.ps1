@@ -36,15 +36,12 @@ Invoke-Step { Set-Location -Path $targetDirectory -ErrorAction Stop } "Failed to
 Invoke-Step { .\service.bat remove } "Failed to remove Tomcat service."
 
 
-# up to this point everything is working as expected
-
-
 # Download and extract the latest version to the Prog folder
 $tomcatUrl = "https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.113/bin/apache-tomcat-9.0.113-windows-x64.zip"
 $zipFile = "apache-tomcat-9.0.113-windows-x64.zip"
 $progressPreference = 'silentlyContinue'
-Invoke-Step { Invoke-WebRequest $tomcatUrl -Outfile $env:USERPROFILE\Desktop\$zipFile -ErrorAction Stop } "Failed to download Tomcat archive from $tomcatUrl."
-Invoke-Step { Expand-Archive -Path $env:USERPROFILE\Desktop\$zipFile -DestinationPath C:\Prog -Force } "Failed to extract Tomcat archive to C:\Prog."
+Invoke-Step { Invoke-WebRequest $tomcatUrl -Outfile C:\Prog\$zipFile -ErrorAction Stop } "Failed to download Tomcat archive from $tomcatUrl."
+Invoke-Step { Expand-Archive -Path C:\Prog\$zipFile -DestinationPath C:\Prog -Force } "Failed to extract Tomcat archive to C:\Prog."
 
 # Copy the webapps folder from the old Tomcat to the new one
 $oldWebappsFile = "C:\Prog\apache-tomcat-9.0.43\webapps"
@@ -93,7 +90,7 @@ Invoke-Step { Set-Location -Path "C:\" -ErrorAction Stop } "Failed to set locati
 Invoke-Step { Remove-Item -Path $targetDirectory2 -Recurse -Force -ErrorAction Stop } "Failed to remove old Tomcat directory at '$targetDirectory2'."
 
 # Remove the install zip file
-Invoke-Step { Remove-Item -Path $env:USERPROFILE\Desktop\"apache-tomcat-9.0.113-windows-x64.zip" -Recurse -Force -ErrorAction Stop } "Failed to delete Tomcat archive."
+Invoke-Step { Remove-Item -Path C:\Prog\"apache-tomcat-9.0.113-windows-x64.zip" -Recurse -Force -ErrorAction Stop } "Failed to delete Tomcat archive."
 
 # Start the Apache Tomcat Service
 Invoke-Step { Start-Service $serviceName -ErrorAction Stop } "Failed to start service $serviceName."
