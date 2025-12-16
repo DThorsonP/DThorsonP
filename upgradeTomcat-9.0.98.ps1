@@ -19,6 +19,22 @@ function Invoke-Step {
     }
 }
 
+# Check which version of Apache Tomcat is currently installed
+$tomcatInstallPath = "C:\Prog"
+$installedTomcat = Get-ChildItem -Path $tomcatInstallPath -Directory -ErrorAction SilentlyContinue | 
+    Where-Object { $_.Name -match "^apache-tomcat-(\d+\.\d+\.\d+)$" } |
+    Sort-Object { [version]($_.Name -replace "apache-tomcat-", "") } -Descending |
+    Select-Object -First 1
+
+if ($installedTomcat) {
+    $currentVersion = $installedTomcat.Name -replace "apache-tomcat-", ""
+    $currentTomcatPath = $installedTomcat.FullName
+    Write-Host "Detected installed Apache Tomcat version: $currentVersion"
+    Write-Host "Installation path: $currentTomcatPath"
+} else {
+    throw "No Apache Tomcat installation found in '$tomcatInstallPath'."
+}
+
 # Stop the Apache Tomcat Service if it's installed and running
 $serviceName = "Tomcat9"
 $service = Get-Service -Name $serviceName -ErrorAction Stop
@@ -27,7 +43,7 @@ Invoke-Step { Stop-Service $serviceName -ErrorAction Stop } "Failed to stop serv
 
 
 # Uninstall the Apache Tomcat Service
-$targetDirectory = "C:\Prog\apache-tomcat-9.0.98\bin"
+$targetDirectory = "$currentTomcatPath\bin"
 if (-not (Test-Path -Path $targetDirectory -PathType Container)) {
     throw "Target directory '$targetDirectory' not found for service removal."
 }
@@ -47,12 +63,12 @@ Invoke-Step { Invoke-WebRequest $tomcatUrl -Outfile $env:USERPROFILE\Desktop\$zi
 Invoke-Step { Expand-Archive -Path $env:USERPROFILE\Desktop\$zipFile -DestinationPath C:\Prog -Force } "Failed to extract Tomcat archive to C:\Prog."
 
 # Copy the webapps folder from the old Tomcat to the new one
-$oldWebappsFile = "C:\Prog\apache-tomcat-9.0.98\webapps"
+$oldWebappsFile = "$currentTomcatPath\webapps"
 $newWebappsFile = "C:\Prog\apache-tomcat-9.0.113\"
 Invoke-Step { Copy-Item -Path $oldWebappsFile -Destination $newWebappsFile -Recurse -Force -ErrorAction Stop } "Failed to copy webapps directory."
 
 # Copy the logs folder from the old Tomcat to the new one
-$oldLogsFile = "C:\Prog\apache-tomcat-9.0.98\logs"
+$oldLogsFile = "$currentTomcatPath\logs"
 $newLogsFile = "C:\Prog\apache-tomcat-9.0.113\"
 Invoke-Step { Copy-Item  -Path $oldLogsFile -Destination $newLogsFile -Recurse -Force -ErrorAction Stop } "Failed to copy logs directory."
 
@@ -87,7 +103,7 @@ Invoke-Step { Set-Service $serviceName -StartupType Automatic -Description $serv
 # C:/Prog/apache-tomcat-9.0.109/logs/sailpoint.log
 
 # Remove the old Tomcat
-$targetDirectory2 = "C:\Prog\apache-tomcat-9.0.98"
+$targetDirectory2 = $currentTomcatPath
 if (-not (Test-Path -Path $targetDirectory2 -PathType Container)) {
     throw "Target directory '$targetDirectory2' not found for removal."
 }
