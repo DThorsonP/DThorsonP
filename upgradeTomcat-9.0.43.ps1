@@ -57,12 +57,6 @@ $newLogsFile = "C:\Prog\apache-tomcat-9.0.113\"
 Invoke-Step { Copy-Item  -Path $oldLogsFile -Destination $newLogsFile -Recurse -Force -ErrorAction Stop } "Failed to copy logs directory."
 
 # Update the environment variable for CATALINA_HOME
-<<<<<<< HEAD
-=======
-# this isn't working because the current PowerShell session isn't refreshing the variables so,
-# subsequent steps don't work as expected but if you close,
-# PowerShell and open a new admin session it'll have updated
->>>>>>> f651fa2bebf33895f8bc8f38d24bbba97c740063
 Invoke-Step { [System.Environment]::SetEnvironmentVariable("CATALINA_HOME", "C:\Prog\apache-tomcat-9.0.113", "Machine") } "Failed to set CATALINA_HOME environment variable."
 $env:CATALINA_HOME = "C:\Prog\apache-tomcat-9.0.113"
 
