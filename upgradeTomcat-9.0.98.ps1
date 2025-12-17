@@ -87,11 +87,27 @@ $serviceDescription = "Apache Tomcat 9.0.113 Server"
 Invoke-Step { Set-Service $serviceName -StartupType Automatic -Description $serviceDescription -ErrorAction Stop } "Failed to configure service $serviceName."
 
 # If IIQ is installed update the log4j.properties file
-# Need to update log file before deleting old Tomcat folders
-# C:\Prog\apache-tomcat-9.0.109\webapps\identityiq\WEB-INF\classes\log4j.properties
-# The line to update is appender.file.fileName=<path to sailpoint.log file>
-# The path to sailpoint.log is as follows
-# C:/Prog/apache-tomcat-9.0.109/logs/sailpoint.log
+$iiqPath = "C:\Prog\apache-tomcat-9.0.113\webapps\identityiq"
+$log4jPropertiesFile = "$iiqPath\WEB-INF\classes\log4j.properties"
+
+if (Test-Path -Path $iiqPath -PathType Container) {
+    Write-Host "IdentityIQ installation detected at '$iiqPath'"
+    
+    if (Test-Path -Path $log4jPropertiesFile -PathType Leaf) {
+        Write-Host "Updating log4j.properties file..."
+        
+        $log4jContent = Get-Content -Path $log4jPropertiesFile -Raw
+        $newLogPath = "C:/Prog/apache-tomcat-9.0.113/logs/sailpoint.log"
+        $updatedContent = $log4jContent -replace "appender\.file\.fileName=.*", "appender.file.fileName=$newLogPath"
+        
+        Invoke-Step { Set-Content -Path $log4jPropertiesFile -Value $updatedContent -ErrorAction Stop } "Failed to update log4j.properties file."
+        Write-Host "log4j.properties updated with new log path: $newLogPath"
+    } else {
+        Write-Host "Warning: log4j.properties file not found at '$log4jPropertiesFile'"
+    }
+} else {
+    Write-Host "IdentityIQ not installed, skipping log4j.properties update."
+}
 
 # Remove the old Tomcat
 $targetDirectory2 = $currentTomcatPath
