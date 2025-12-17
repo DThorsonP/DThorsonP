@@ -88,7 +88,8 @@ Invoke-Step { Set-Service $serviceName -StartupType Automatic -Description $serv
 
 # If IIQ is installed update the log4j.properties file
 # Need to update log file before deleting old Tomcat folders
-# C:\Prog\apache-tomcat-9.0.109\webapps\identityiq\WEB-INF\classes\log4j.properties
+# Check if this file is present C:\Prog\apache-tomcat-9.0.113\webapps\identityiq\
+# C:\Prog\apache-tomcat-9.0.113\webapps\identityiq\WEB-INF\classes\log4j.properties
 # The line to update is appender.file.fileName=<path to sailpoint.log file>
 # The path to sailpoint.log is as follows
 # C:/Prog/apache-tomcat-9.0.109/logs/sailpoint.log
