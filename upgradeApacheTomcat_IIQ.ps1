@@ -20,7 +20,7 @@ function Invoke-Step {
 }
 
 # Check which version of Apache Tomcat is currently installed
-$tomcatInstallPath = "C:\SailPoint\Tomcat 9.0"
+$tomcatInstallPath = "C:\SailPoint\Tomcat 9.0\bin\Tomcat9.exe"
 $installedTomcat = Get-ChildItem -Path $tomcatInstallPath -Directory -ErrorAction SilentlyContinue | 
     Where-Object { $_.Name -match "^apache-tomcat-(\d+\.\d+\.\d+)$" } |
     Sort-Object { [version]($_.Name -replace "apache-tomcat-", "") } -Descending |
@@ -36,7 +36,7 @@ if ($installedTomcat) {
 }
 
 # Stop the Apache Tomcat Service if it's installed and running
-$serviceName = "Tomcat9"
+$serviceName = "SailPoint - Tomcat IdentityIQ"
 $service = Get-Service -Name $serviceName -ErrorAction Stop
 
 Invoke-Step { Stop-Service $serviceName -ErrorAction Stop } "Failed to stop service $serviceName."
